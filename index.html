@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>乐天</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
+          Helvetica, Arial, sans-serif;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background-color: rgb(32, 33, 33);
+      }
+
+      /* PC端背景 - 显示PC背景图 */
+      @media (min-width: 769px) {
+        body {
+          background-image: image-set(
+            url("./images/pc_bg.webp") type("image/webp"),
+            url("./images/pc_bg.png") type("image/png")
+          );
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      }
+
+      /* 手机模拟器容器 - 只在PC端显示 */
+      .phone-mockup {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* PC端：创建手机框效果 */
+      @media (min-width: 769px) {
+        .phone-mockup {
+          max-width: 420px;
+          max-height: 100vh;
+          background-image: url("./images/pc_mobile_bg.jpg");
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          overflow: hidden;
+        }
+      }
+
+      /* 移动端：直接显示移动背景 */
+      @media (max-width: 768px) {
+        .phone-mockup {
+          background-image: image-set(
+            url("./images/mobile_bg.webp") type("image/webp"),
+            url("./images/mobile_bg.png") type("image/png")
+          );
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      }
+
+      .container {
+        text-align: center;
+        z-index: 10;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon-container {
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .check-icon {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        animation: scaleIn 0.5s ease-out;
+      }
+
+      .check-icon img {
+        width: 80px;
+        height: 80px;
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-spinner {
+        width: 80px;
+        height: 80px;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top-color: #52c41a;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+
+      .title {
+        font-size: 32px;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .subtitle {
+        font-size: 18px;
+        color: rgb(170, 170, 170);
+        margin-bottom: 50px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .btn {
+        min-width: 200px;
+        padding: 16px 40px;
+        font-size: 18px;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background-image: linear-gradient(to right, #c18953, #ffecae);
+        color: #333;
+        box-shadow: 0 4px 12px rgba(232, 184, 119, 0.4);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(232, 184, 119, 0.6);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: #e8b877;
+        border-color: #e8b877;
+        border: 1px solid #e8b877;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(232, 184, 119, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .btn-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      /* 移动端适配 */
+      @media (max-width: 768px) {
+        .title {
+          font-size: 24px;
+        }
+
+        .subtitle {
+          font-size: 15px;
+          margin-bottom: 40px;
+        }
+
+        .check-icon {
+          width: 60px;
+          height: 60px;
+        }
+
+        .check-icon img {
+          width: 60px;
+          height: 60px;
+        }
+
+        .loading-spinner {
+          width: 60px;
+          height: 60px;
+        }
+
+        .btn {
+          min-width: 280px;
+          padding: 14px 30px;
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .btn {
+          min-width: 240px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- PC端显示手机框，移动端全屏显示 -->
+    <div class="phone-mockup">
+      <div class="container">
+        <div class="icon-container" id="iconContainer">
+          <div class="loading-spinner"></div>
+        </div>
+
+        <h1 class="title" id="title">正在进行安全检测...</h1>
+        <p class="subtitle" id="subtitle">请稍候</p>
+
+        <div class="button-group" id="buttonGroup" style="opacity: 0">
+          <a href="https://www.example.com" class="btn btn-primary">
+            <img src="./images/enter.png" alt="进入" class="btn-icon" />
+            进入网站
+          </a>
+          <a
+            href="https://i.q-chats.com/chatlink.html?tag=f19a64f20cd38c65eb7d06696aee1ad5&subSource=sub_source_1&tg=bce1b9a65276843bf870743e6f3109e2"
+            class="btn btn-secondary"
+            target="_blank"
+          >
+            <img src="./images/service.png" alt="客服" class="btn-icon" />
+            在线客服
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 2秒后显示检测完成
+      setTimeout(() => {
+        // 更改图标
+        const iconContainer = document.getElementById("iconContainer");
+        iconContainer.innerHTML = `
+                 <div class="check-icon">
+                     <img src="./images/complete.png" alt="完成" />
+                 </div>
+             `;
+
+        // 更改文字
+        document.getElementById("title").textContent = "已通过安全检测";
+        document.getElementById("subtitle").textContent = "请点击下方按钮前往";
+
+        // 显示按钮
+        const buttonGroup = document.getElementById("buttonGroup");
+        buttonGroup.style.transition = "opacity 0.5s ease-in";
+        buttonGroup.style.opacity = "1";
+      }, 800);
+    </script>
+  </body>
+</html>
